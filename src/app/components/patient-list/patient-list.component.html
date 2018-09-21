@@ -1,3 +1,28 @@
-<p>
-  patient-list works!
-</p>
+<h2>Patients List</h2>
+<table class="table table-hover" *ngIf="patients.length>0;else loading">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>DOB</th>
+      <th>AGE</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let patient of patients">
+      <td>{{ patient.patientId }}</td>
+      <td>{{ patient.patientName }}</td>
+      <td>{{ patient.dateOfBirth|date }}</td>
+      <td>{{ patient.age }}</td>
+      <td>
+        <button type="button" class="btn btn-danger">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #loading>
+    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...
+</ng-template>

@@ -1,3 +1,12 @@
-<p>
-  patient works!
-</p>
+<div *ngIf="patient; else loading">
+  <h3>Patient Details</h3>
+  <div class="well">
+    <strong>ID: </strong> {{ patient.patientId }} <br>
+    <strong>name: </strong> {{ patient.patientName }} <br>
+    <strong>Date of Birth: </strong> {{ patient.dateOfBirth|date }} <br>
+    <strong>Age: </strong> {{ patient.age }}
+  </div>
+</div>
+<ng-template #loading>
+    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...
+</ng-template>

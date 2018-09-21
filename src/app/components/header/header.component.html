@@ -10,11 +10,11 @@
       <li routerLinkActive="active">
         <a routerLink="/addpatient">Add Patient</a>
       </li>
-      <form class="navbar-form navbar-left">
+      <form class="navbar-form navbar-left" (ngSubmit)="onSearchById()" #f="ngForm">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search Patient by ID">
+          <input type="number" class="form-control" name="patientID" placeholder="Search Patient by ID" ngModel required>
           <div class="input-group-btn">
-            <button class="btn btn-default" type="submit">
+            <button class="btn btn-default" type="submit" [disabled]="f.invalid">
               <i class="glyphicon glyphicon-search"></i>
             </button>
           </div>

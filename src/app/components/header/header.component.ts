@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('f') searchForm: NgForm;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  onSearchById(){
+    let pid = +this.searchForm.form.get('patientID').value;
+    this.router.navigate(['/patient', pid]);
   }
 
 }

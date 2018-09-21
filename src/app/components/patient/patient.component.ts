@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PatientService } from '../../services/patient.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Patient } from '../../models/patient.model';
 
 @Component({
   selector: 'app-patient',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientComponent implements OnInit {
 
-  constructor() { }
+  private patient: Patient = null;
+  private patientID: number;
+
+  constructor(private patientService:PatientService,private route:ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.patient = null;
+        this.patientID = +params['patientid'];
+        this.patientService.getPatient(this.patientID).subscribe(
+          (patient: Patient) => this.patient = patient ,
+          (error) => console.log(error)
+        );
+      }
+    );
   }
 
 }

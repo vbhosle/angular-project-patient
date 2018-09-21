@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -8,6 +9,7 @@ import { PatientAddComponent } from './components/patient-add/patient-add.compon
 import { HeaderComponent } from './components/header/header.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PatientService } from './services/patient.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { PatientService } from './services/patient.service';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [
