@@ -22,4 +22,8 @@ export class PatientListComponent implements OnInit {
    );
   }
 
+  onDeletePatient(patientID: number){
+    this.patientService.deletePatient(patientID);
+  }
+
 }

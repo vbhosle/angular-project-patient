@@ -16,7 +16,7 @@
       <td>{{ patient.dateOfBirth|date }}</td>
       <td>{{ patient.age }}</td>
       <td>
-        <button type="button" class="btn btn-danger">
+        <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.patientId)">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
       </td>

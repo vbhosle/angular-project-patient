@@ -12,6 +12,7 @@ export class PatientComponent implements OnInit {
 
   private patient: Patient = null;
   private patientID: number;
+  private statusText: string;
 
   constructor(private patientService:PatientService,private route:ActivatedRoute) { }
 
@@ -19,10 +20,11 @@ export class PatientComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) => {
         this.patient = null;
+        this.statusText = 'loading';
         this.patientID = +params['patientid'];
         this.patientService.getPatient(this.patientID).subscribe(
-          (patient: Patient) => this.patient = patient ,
-          (error) => console.log(error)
+          (patient: Patient) => { this.patient = patient; this.statusText = null; } ,
+          (error) => this.statusText = error
         );
       }
     );
