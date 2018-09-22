@@ -1,28 +1,88 @@
 <h2>Patients List</h2>
-<table class="table table-hover" *ngIf="patients.length>0;else loading">
+<table class="table table-hover table-bordered" *ngIf="patients.length>0;else nodata">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>NAME</th>
-      <th>DOB</th>
-      <th>AGE</th>
+      <th (click)="setSortProperty('patientId')">
+        ID
+        <span *ngIf="sortProperty === 'patientId'">
+          <span *ngIf="isAsc;then sortAsc else sortDesc"></span>
+        </span>
+      </th>
+      <th (click)="setSortProperty('patientName')">
+        NAME
+        <span *ngIf="sortProperty === 'patientName'">
+          <span *ngIf="isAsc;then sortAsc else sortDesc"></span>
+        </span>
+      </th>
+      <th (click)="setSortProperty('dateOfBirth')">
+        DOB
+        <span *ngIf="sortProperty === 'dateOfBirth'">
+          <span *ngIf="isAsc;then sortAsc else sortDesc"></span>
+        </span>
+      </th>
+      <th (click)="setSortProperty('age')">
+        AGE
+        <span *ngIf="sortProperty === 'age'">
+          <span *ngIf="isAsc;then sortAsc else sortDesc"></span>
+        </span>
+      </th>
       <th>Delete</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let patient of patients">
+    <tr *ngFor="let patient of patients|sort:(isAsc?'ASC':'DESC'):sortProperty; let i = index;">
       <td>{{ patient.patientId }}</td>
       <td>{{ patient.patientName }}</td>
       <td>{{ patient.dateOfBirth|date }}</td>
       <td>{{ patient.age }}</td>
       <td>
-        <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.patientId)">
+        <button type="button" class="btn btn-danger" (click)="parkForDelete(i)">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
       </td>
     </tr>
   </tbody>
 </table>
-<ng-template #loading>
-    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...
+<ng-template #nodata>
+  <!-- <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading... -->
+  <h3>No patient data to display</h3>
 </ng-template>
+<ng-template #sortAsc>
+  <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+</ng-template>
+<ng-template #sortDesc>
+  <span class="glyphicon glyphicon-chevron-down pull-right"></span>
+</ng-template>
+<!-- <div class="container" style="width:200px; position: absolute; top: 0px; right: 0px; height: 100px; padding:10px;" *ngIf="isUndoActive">
+  <div class="row">
+  <button type="button" class="btn btn-info" (click)="undoDelete()">Undo
+  </button>
+</div>
+  <div class="row" style="width: 300px; max-height:100px; overflow:scroll">
+    <ul class="list-group">
+      <li *ngFor="let patient of deleteCache" class="list-group-item">
+        {{ patient.patientId }} - {{ patient.patientName }} , {{ patient.dateOfBirth|date}}
+      </li>
+    </ul>
+  </div>
+</div> -->
+
+<div class="container" style="width:250px; position: absolute; top: 0px; right: 0px; height: 100px;" *ngIf="isUndoActive">
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <button type="button" class="btn btn-info" (click)="undoDelete()">Undo
+          </button>
+        </h4>
+      </div>
+      <div class="panel-body" style="max-height:100px; overflow:scroll">
+        <ul class="list-group">
+          <li *ngFor="let patient of deleteCache" class="list-group-item">
+            {{ patient.patientId }} - {{ patient.patientName }} , {{ patient.dateOfBirth|date}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

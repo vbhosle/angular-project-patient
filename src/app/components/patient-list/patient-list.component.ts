@@ -11,19 +11,61 @@ export class PatientListComponent implements OnInit {
 
   private patients: Patient[] = [];
 
+  private deleteCache: Patient[] = [];
+  private isUndoActive: boolean = false;
+  private undoTimer = null;
+
+  private isAsc:boolean = true;
+  private sortProperty:string = 'patientId';
+
   constructor(private patientService: PatientService) { }
 
   ngOnInit() {
-   this.patientService.getAllPatients().subscribe(
-     (patients:Patient[]) => {
-       console.log(patients[0]);
+   this.patients = this.patientService.getAllPatients();
+   this.patientService.patientsStream.subscribe(
+     (patients: Patient[]) => {
        this.patients = patients;
-     }
+     } 
    );
   }
 
   onDeletePatient(patientID: number){
     this.patientService.deletePatient(patientID);
+  }
+
+  parkForDelete(index:number){
+    this.isUndoActive = true;
+    clearTimeout(this.undoTimer);
+    this.undoTimer = setTimeout(() => {
+      this.isUndoActive = false;
+      this.processDeleteCache();
+    }, 5*1000);
+    let patient = this.patients[index];
+    this.patients.splice(index,1);
+    this.deleteCache.unshift(patient);
+  }
+
+  processDeleteCache(){
+    this.patientService.deletePatients(this.deleteCache);
+    this.deleteCache = [];
+  }
+
+  undoDelete(){
+    clearTimeout(this.undoTimer);
+    this.isUndoActive = false;
+    this.patients = this.patients.concat(this.deleteCache);
+    this.deleteCache = [];
+  }
+
+  setSortProperty(prop:string){
+    if(this.sortProperty === prop){
+      this.isAsc = !this.isAsc;
+    }
+    else{
+      this.isAsc = true;
+      this.sortProperty = prop;
+    }
+  
   }
 
 }

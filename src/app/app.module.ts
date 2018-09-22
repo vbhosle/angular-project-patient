@@ -10,6 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PatientService } from './services/patient.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SortPipe } from './pipes/sort.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
     PatientComponent,
     PatientListComponent,
     PatientAddComponent,
-    HeaderComponent
+    HeaderComponent,
+    SortPipe
   ],
   imports: [
     BrowserModule,

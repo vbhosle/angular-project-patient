@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Patient } from '../../models/patient.model';
+import { PatientService } from '../../services/patient.service';
 
 @Component({
   selector: 'app-patient-add',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientAddComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('patientAddForm') patientAddForm: NgForm;
+  
+  constructor(private patientService: PatientService) { }
 
   ngOnInit() {
+  }
+
+  onSubmit(){
+    let patient:Patient = new Patient(
+                        null,
+                        this.patientAddForm.form.get('name').value,
+                        new Date(this.patientAddForm.form.get('dob').value),
+                      );
+    this.patientService.addPatient(patient);
   }
 
 }
