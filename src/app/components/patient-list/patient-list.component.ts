@@ -71,7 +71,7 @@ export class PatientListComponent implements OnInit, CanDeactivateGuard {
 
   canDeactivate(){
     if(this.isUndoActive){
-      let response = confirm("You can't undo if you leave the page. Do you still want to proceed?");
+      let response = confirm("You can not undo if you leave the page. Do you still want to proceed?");
       if(response){
         this.processDeleteCache();
       }
