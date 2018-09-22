@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PatientService } from './services/patient.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SortPipe } from './pipes/sort.pipe';
+import { CanDeactivateGuard } from './can-deactivate-guard.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SortPipe } from './pipes/sort.pipe';
     AppRoutingModule
   ],
   providers: [
-    PatientService
+    PatientService,
+    CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
 })

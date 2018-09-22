@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Patient } from '../../models/patient.model';
 import { PatientService } from '../../services/patient.service';
+import { CanDeactivateGuard } from '../../can-deactivate-guard.service';
 
 @Component({
   selector: 'app-patient-list',
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.css']
 })
-export class PatientListComponent implements OnInit {
+export class PatientListComponent implements OnInit, CanDeactivateGuard {
 
   private patients: Patient[] = [];
 
@@ -66,6 +67,17 @@ export class PatientListComponent implements OnInit {
       this.sortProperty = prop;
     }
   
+  }
+
+  canDeactivate(){
+    if(this.isUndoActive){
+      let response = confirm("You can't undo if you leave the page. Do you still want to proceed?");
+      if(response){
+        this.processDeleteCache();
+      }
+      return response;
+    }
+    return true;
   }
 
 }
