@@ -1,15 +1,18 @@
-<form #patientAddForm="ngForm">
+<form [formGroup]="patientAddForm">
   <div class="form-group">
     <label for="name">Patient name:</label>
-    <input type="text" class="form-control" id="name" name="name" ngModel required>
+    <input type="text" class="form-control" id="name" name="name" formControlName="name">
+    <div *ngIf="patientAddForm.get('name').touched && patientAddForm.get('name').invalid">
+      <span class="help-block" *ngIf="patientAddForm.get('name').errors.required">Project name is required</span>
+    </div>
   </div>
   <div class="form-group">
     <label for="dob">Date of Birth:</label>
-    <input type="date" class="form-control" id="dob" name="dob" ngModel required>
-  </div>
-  <div class="form-group">
-      <label for="age">Age:</label>
-      <input type="number" class="form-control" id="age" name="age" ngModel disabled>
+    <input type="date" class="form-control" id="dob" name="dob" formControlName="dob">
+    <div *ngIf="patientAddForm.get('dob').touched && patientAddForm.get('dob').invalid">
+      <span class="help-block" *ngIf="patientAddForm.get('dob').errors.required">Date of birth is required</span>
+      <span class="help-block" *ngIf="patientAddForm.get('dob').errors.dobInvalid">Date of birth cannot be a future date</span>
     </div>
-  <button type="submit" class="btn btn-default" (click)="onSubmit()">Submit</button>
+  </div>
+  <button type="submit" class="btn btn-default" (click)="onSubmit()" [disabled]="patientAddForm.invalid">Submit</button>
 </form>

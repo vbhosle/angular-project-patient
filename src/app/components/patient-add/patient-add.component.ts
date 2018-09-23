@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
+import { NgForm, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Patient } from '../../models/patient.model';
 import { PatientService } from '../../services/patient.service';
 
@@ -10,20 +10,40 @@ import { PatientService } from '../../services/patient.service';
 })
 export class PatientAddComponent implements OnInit {
 
-  @ViewChild('patientAddForm') patientAddForm: NgForm;
+  patientAddForm: FormGroup;
   
   constructor(private patientService: PatientService) { }
 
   ngOnInit() {
+    this.patientAddForm = new FormGroup({
+      'name': new FormControl(null, [Validators.required]),
+      'dob': new FormControl(null, [Validators.required,this.dobValidator])
+    });
   }
+
+  calculateAge = Patient.calculateAge;
 
   onSubmit(){
     let patient:Patient = new Patient(
                         null,
-                        this.patientAddForm.form.get('name').value,
-                        new Date(this.patientAddForm.form.get('dob').value),
+                        this.patientAddForm.get('name').value,
+                        new Date(this.patientAddForm.get('dob').value),
                       );
     this.patientService.addPatient(patient);
+  }
+
+
+  dobValidator(control: FormControl):{[s:string]:boolean}{
+    try{
+      let dob = new Date(control.value);
+      if(!Patient.isFutureDate(dob)){
+        return null;
+      }
+    }
+    catch(err){
+      
+    }
+    return {'dobInvalid':true};
   }
 
 }
