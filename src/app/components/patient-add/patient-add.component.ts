@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FlashMessagesService } from 'angular2-flash-messages';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Patient } from '../../models/patient.model';
 import { PatientService } from '../../services/patient.service';
@@ -12,7 +13,7 @@ export class PatientAddComponent implements OnInit {
 
   patientAddForm: FormGroup;
   
-  constructor(private patientService: PatientService) { }
+  constructor(private patientService: PatientService, private flashMessageService: FlashMessagesService) { }
 
   ngOnInit() {
     this.patientAddForm = new FormGroup({
@@ -28,6 +29,11 @@ export class PatientAddComponent implements OnInit {
                         new Date(this.patientAddForm.get('dob').value),
                       );
     this.patientService.addPatient(patient);
+    this.flashMessageService.show(
+      `<div class="alert alert-success">
+        Patient Added!
+       </div>`
+    );
   }
 
 
