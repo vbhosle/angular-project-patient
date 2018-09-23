@@ -1,4 +1,4 @@
-<form [formGroup]="patientAddForm">
+<form [formGroup]="patientAddForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="name">Patient name:</label>
     <input type="text" class="form-control" id="name" name="name" formControlName="name">
@@ -14,5 +14,5 @@
       <span class="help-block" *ngIf="patientAddForm.get('dob').errors.dobInvalid">Date of birth cannot be a future date</span>
     </div>
   </div>
-  <button type="submit" class="btn btn-default" (click)="onSubmit()" [disabled]="patientAddForm.invalid">Submit</button>
+  <button type="submit" class="btn btn-default" [disabled]="patientAddForm.invalid">Submit</button>
 </form>

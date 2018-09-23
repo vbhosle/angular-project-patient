@@ -12,6 +12,7 @@ import { PatientService } from './services/patient.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SortPipe } from './pipes/sort.pipe';
 import { CanDeactivateGuard } from './can-deactivate-guard.service';
+import { FormActivateGuard } from './services/form-activate-guard.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CanDeactivateGuard } from './can-deactivate-guard.service';
   ],
   providers: [
     PatientService,
-    CanDeactivateGuard
+    CanDeactivateGuard,
+    FormActivateGuard
   ],
   bootstrap: [AppComponent]
 })

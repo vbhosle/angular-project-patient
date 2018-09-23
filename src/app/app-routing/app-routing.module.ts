@@ -4,10 +4,11 @@ import { PatientListComponent } from '../components/patient-list/patient-list.co
 import { PatientAddComponent } from '../components/patient-add/patient-add.component';
 import { PatientComponent } from '../components/patient/patient.component';
 import { CanDeactivateGuard } from '../can-deactivate-guard.service';
+import { FormActivateGuard } from '../services/form-activate-guard.service';
 
 const appRoutes: Routes = [
   { path: 'allpatients', component: PatientListComponent, canDeactivate: [CanDeactivateGuard] },
-  { path: 'addpatient', component: PatientAddComponent },
+  { path: 'addpatient', component: PatientAddComponent, canActivate: [FormActivateGuard] },
   { path: 'patient/:patientid', component: PatientComponent },
   { path: '', redirectTo:'/allpatients', pathMatch: 'full' },
 ];

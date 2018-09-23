@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
-import { NgForm, Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Patient } from '../../models/patient.model';
 import { PatientService } from '../../services/patient.service';
 
@@ -20,8 +20,6 @@ export class PatientAddComponent implements OnInit {
       'dob': new FormControl(null, [Validators.required,this.dobValidator])
     });
   }
-
-  calculateAge = Patient.calculateAge;
 
   onSubmit(){
     let patient:Patient = new Patient(
