@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { AngularDraggableModule } from 'angular2-draggable';
 
 import { AppComponent } from './app.component';
 import { PatientComponent } from './components/patient/patient.component';
@@ -30,6 +31,7 @@ import { FormActivateGuard } from './services/form-activate-guard.service';
     ReactiveFormsModule,
     HttpClientModule,
     FlashMessagesModule.forRoot(),
+    AngularDraggableModule,
     AppRoutingModule
   ],
   providers: [
