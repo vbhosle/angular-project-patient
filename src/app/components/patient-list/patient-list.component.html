@@ -44,7 +44,6 @@
   </tbody>
 </table>
 <ng-template #nodata>
-  <!-- <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading... -->
   <h3>No patient data to display</h3>
 </ng-template>
 <ng-template #sortAsc>
@@ -53,19 +52,6 @@
 <ng-template #sortDesc>
   <span class="glyphicon glyphicon-chevron-down pull-right"></span>
 </ng-template>
-<!-- <div class="container" style="width:200px; position: absolute; top: 0px; right: 0px; height: 100px; padding:10px;" *ngIf="isUndoActive">
-  <div class="row">
-  <button type="button" class="btn btn-info" (click)="undoDelete()">Undo
-  </button>
-</div>
-  <div class="row" style="width: 300px; max-height:100px; overflow:scroll">
-    <ul class="list-group">
-      <li *ngFor="let patient of deleteCache" class="list-group-item">
-        {{ patient.patientId }} - {{ patient.patientName }} , {{ patient.dateOfBirth|date}}
-      </li>
-    </ul>
-  </div>
-</div> -->
 
 <div ngDraggable class="container" style="width:350px; position: fixed; top: 0px; right: 0px; height: 100px;" *ngIf="isUndoActive">
   <div class="panel-group">
