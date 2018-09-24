@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SortPipe } from './pipes/sort.pipe';
 import { CanDeactivateGuard } from './can-deactivate-guard.service';
 import { FormActivateGuard } from './services/form-activate-guard.service';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FormActivateGuard } from './services/form-activate-guard.service';
     PatientListComponent,
     PatientAddComponent,
     HeaderComponent,
-    SortPipe
+    SortPipe,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
