@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Patient } from '../models/patient.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,24 @@ export class PatientService {
 
 
   constructor(private httpClient: HttpClient) {
-    this.patients.set(1, new Patient(1, 'Patient 1', new Date('1985-10-10')));
-    this.patients.set(2, new Patient(2, 'Patient 2', new Date('1995-09-10')));
-    this.patients.set(3, new Patient(3, 'Patient 3', new Date('1980-08-10')));
-    this.patients.set(4, new Patient(4, 'Patient 4', new Date('1980-07-10')));
-    this.patients.set(5, new Patient(5, 'Patient 5', new Date('1995-06-10')));
-    this.patients.set(6, new Patient(6, 'Patient 6', new Date('1985-05-10')));
+    // httpClient.get<Patient[]>("http://localhost:8080/patient-management/patients").subscribe(
+    //     data => {
+    //       data.forEach(
+    //         patient => this.patients.set(patient.patientId, new Patient(patient.patientId, patient.patientName, new Date(patient.dateOfBirth)))
+    //       );
+    //     }
+    //   );
   }
 
-  getAllPatients():Patient[] {
-    return Array.from(this.patients.values()).slice();
+  getAllPatients():Observable<Patient[]> {
+    return this.httpClient.get<Patient[]>("http://localhost:8080/patient-management/patients")
+            .pipe(
+              map(
+                patientList => patientList.map(
+                  patient => new Patient(patient.patientId, patient.patientName, new Date(patient.dateOfBirth))
+                )
+              )
+            );
   }
 
   getPatient(patinetID: number): Patient {

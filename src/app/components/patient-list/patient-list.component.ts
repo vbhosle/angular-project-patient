@@ -3,15 +3,20 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { Patient } from '../../models/patient.model';
 import { PatientService } from '../../services/patient.service';
 import { CanDeactivateGuard } from '../../can-deactivate-guard.service';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { HttpErrorResponse } from '../../../../node_modules/@angular/common/http';
 
 @Component({
   selector: 'app-patient-list',
-  templateUrl: './patient-list.component.html',
+  templateUrl: './patient-list.component.1.html',
   styleUrls: ['./patient-list.component.css']
 })
 export class PatientListComponent implements OnInit, CanDeactivateGuard {
 
   private patients: Patient[] = [];
+  private patientsObservable: Observable<Patient[]>;
+  private restError: Subject<HttpErrorResponse> = new Subject<HttpErrorResponse>();
 
   private deleteCache: Patient[] = [];
   private isUndoActive: boolean = false;
@@ -23,10 +28,14 @@ export class PatientListComponent implements OnInit, CanDeactivateGuard {
   constructor(private patientService: PatientService, private flashMessageService: FlashMessagesService) { }
 
   ngOnInit() {
-    this.patients = this.patientService.getAllPatients();
-    this.patientService.patientsStream.subscribe(
+    this.patientsObservable = this.patientService.getAllPatients().pipe(catchError(
+      (error:HttpErrorResponse) => { console.log("CatchError "+error); this.restError.next(error); return of<Patient[]>();}
+    ));
+    this.patientService.getAllPatients().subscribe(
       (patients: Patient[]) => {
-        this.patients = patients;
+        patients.forEach(
+          patient => this.patients.push(new Patient(patient.patientId, patient.patientName, new Date(patient.dateOfBirth)))
+        );
       }
     );
   }
