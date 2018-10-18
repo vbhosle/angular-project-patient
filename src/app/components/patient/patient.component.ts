@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Patient } from '../../models/patient.model';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-patient',
@@ -10,7 +13,8 @@ import { Patient } from '../../models/patient.model';
 })
 export class PatientComponent implements OnInit {
 
-  private patient: Patient = null;
+  private patientObservable: Observable<Patient> = null;
+  private restError: Subject<HttpErrorResponse> = new Subject<HttpErrorResponse>();
   private patientID: number;
 
   constructor(private patientService:PatientService,private route:ActivatedRoute, private router: Router) { }
@@ -18,12 +22,10 @@ export class PatientComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => {
-        this.patient = null;
         this.patientID = +params['patientid'];
-        this.patient = this.patientService.getPatient(this.patientID);
-        if(this.patient == null){
-          this.router.navigate(['/not-found']);
-        } 
+        this.patientObservable = this.patientService.getPatientById(this.patientID).pipe(catchError(
+          (error:any) => { console.log("CatchError "); console.log(error); this.restError.next(error); return of<Patient>();}
+        ));
       }
     );
   }

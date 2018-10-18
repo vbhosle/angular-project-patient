@@ -5,7 +5,7 @@ import { PatientService } from '../../services/patient.service';
 import { CanDeactivateGuard } from '../../can-deactivate-guard.service';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { HttpErrorResponse } from '../../../../node_modules/@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-patient-list',
