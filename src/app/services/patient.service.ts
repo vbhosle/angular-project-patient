@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Patient } from '../models/patient.model';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Subject, Observable, of, ReplaySubject } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { APIError } from '../models/apierror.model';
 import { FlashMessagesService } from '../../../node_modules/angular2-flash-messages';
 
 @Injectable({
@@ -12,8 +11,7 @@ import { FlashMessagesService } from '../../../node_modules/angular2-flash-messa
 export class PatientService {
 
   private patients: Map<number, Patient> = new Map<number, Patient>();
-  public patientsStream: Subject<Patient[]> = new Subject<Patient[]>();
-  private pid_sequence: number = 6;
+  public patientsStream: Subject<Patient[]> = new ReplaySubject<Patient[]>(1);
   private patientServiceURL = "http://localhost:8080/patient-management/patients";
 
 
@@ -28,6 +26,7 @@ export class PatientService {
   }
 
   getAllPatients(): Observable<Patient[]> {
+
     return this.httpClient.get<Patient[]>(this.patientServiceURL)
       .pipe(
         map(
@@ -72,14 +71,34 @@ export class PatientService {
       );
   }
 
-  deletePatient(patientID: number) {
-    this.patients.delete(patientID);
-    this.patientsStream.next(Array.from(this.patients.values()).slice());
+  deletePatient(patient: Patient) {
+    return this.httpClient.delete<Patient>(this.patientServiceURL + "/" + patient.patientId)
+      .pipe(
+        tap(
+          () => {
+            this.flashMessageService.show(
+              `<div class="alert alert-success">
+                  Patient deleted : ${patient.patientId}, ${patient.patientName.substr(0,10)}
+                 </div>`
+            );
+          },
+          (error)=>{
+            this.flashMessageService.show(
+              `<div class="alert alert-danger">
+                  Failed to delete patient, ${patient.patientName.substr(0,10)} ... ${error.error.message? error.error.message: 'Something went wrong'}
+                 </div>`
+            );
+          }
+        ),
+        catchError<Patient, Patient>(
+          () => of<Patient>(patient)
+        )
+      )
   }
 
   deletePatients(patients: Patient[]) {
     for (let patient of patients) {
-      this.patients.delete(patient.patientId);
+      this.deletePatient(patient).subscribe();
     }
     this.patientsStream.next(Array.from(this.patients.values()).slice());
 

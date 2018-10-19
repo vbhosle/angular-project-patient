@@ -1,4 +1,7 @@
-<h2>Patients List</h2>
+<h2>Patients List 
+  <button type="button" class="btn btn-success" (click)="refreshPatientList()">
+    <span class="glyphicon glyphicon-repeat"></span> Refresh
+  </button></h2>
 <div *ngIf="patientsObservable|async as patientList;else loadingOrError">
   <table class="table table-hover table-bordered" *ngIf="patientList.length>0;else nodata">
     <thead>
@@ -31,13 +34,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let patient of patientList|sort:(isAsc?'ASC':'DESC'):sortProperty; let i = index;">
+      <tr [ngClass]="{collapse: patient.deleted}" *ngFor="let patient of patientList|sort:(isAsc?'ASC':'DESC'):sortProperty; let i = index;">
         <td>{{ patient.patientId }}</td>
         <td>{{ patient.patientName }}</td>
         <td>{{ patient.dateOfBirth|date }}</td>
         <td>{{ patient.age }}</td>
         <td>
-          <button type="button" class="btn btn-danger" (click)="parkForDelete(i)">
+          <button type="button" class="btn btn-danger" (click)="patient.deleted = true; parkForDelete(patient)">
             <span class="glyphicon glyphicon-trash"></span>
           </button>
         </td>

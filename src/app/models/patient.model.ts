@@ -2,6 +2,7 @@ export class Patient {
     patientId: number;
     patientName: string;
     dateOfBirth: Date;
+    deleted: boolean;
 
     constructor(patientId: number, patientName: string, dateOfBirth: Date) {
         this.patientId = patientId;
