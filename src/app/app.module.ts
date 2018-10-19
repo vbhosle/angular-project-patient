@@ -16,6 +16,7 @@ import { SortPipe } from './pipes/sort.pipe';
 import { CanDeactivateGuard } from './can-deactivate-guard.service';
 import { FormActivateGuard } from './services/form-activate-guard.service';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LoadingOrErrorComponent } from './components/loading-or-error/loading-or-error.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     PatientAddComponent,
     HeaderComponent,
     SortPipe,
-    NotFoundComponent
+    NotFoundComponent,
+    LoadingOrErrorComponent
   ],
   imports: [
     BrowserModule,

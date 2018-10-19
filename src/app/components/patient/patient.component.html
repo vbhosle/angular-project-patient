@@ -1,17 +1,13 @@
-<div *ngIf="patientObservable|async as patient;else loadingOrError">
+<div *ngIf="patientObservable.data$|async as patient;else loadingOrError.template">
   <h3>Patient Details</h3>
   <div class="well">
-    <strong>ID: </strong> {{ patient.patientId }} <br>
-    <strong>name: </strong> {{ patient.patientName }} <br>
-    <strong>Date of Birth: </strong> {{ patient.dateOfBirth|date }} <br>
+    <strong>ID: </strong> {{ patient.patientId }}
+    <br>
+    <strong>name: </strong> {{ patient.patientName }}
+    <br>
+    <strong>Date of Birth: </strong> {{ patient.dateOfBirth|date }}
+    <br>
     <strong>Age: </strong> {{ patient.age }}
   </div>
 </div>
-<ng-template #loadingOrError>
-  <div *ngIf="restError | async; else loading">
-    Error loading the list of users. Please try again later.
-  </div>
-  <ng-template #loading>
-    Loading users...
-  </ng-template>
-</ng-template>
+<loading-or-error #loadingOrError [loadingWrapper]="patientObservable" [errorMessage]="'Error loading the list of users'"></loading-or-error>

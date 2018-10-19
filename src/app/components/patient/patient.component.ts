@@ -5,6 +5,7 @@ import { Patient } from '../../models/patient.model';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingWrapper } from '../../utils/loading-wrapper.util';
 
 @Component({
   selector: 'app-patient',
@@ -13,7 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class PatientComponent implements OnInit {
 
-  private patientObservable: Observable<Patient> = null;
+  private patientObservable: LoadingWrapper<Patient> = null;
   private restError: Subject<HttpErrorResponse> = new Subject<HttpErrorResponse>();
   private patientID: number;
 
@@ -23,9 +24,10 @@ export class PatientComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) => {
         this.patientID = +params['patientid'];
-        this.patientObservable = this.patientService.getPatientById(this.patientID).pipe(catchError(
-          (error:any) => { console.log("CatchError "); console.log(error); this.restError.next(error); return of<Patient>();}
-        ));
+        // this.patientObservable = this.patientService.getPatientById(this.patientID).pipe(catchError(
+        //   (error:any) => { console.log("CatchError "); console.log(error); this.restError.next(error); return of<Patient>();}
+        // ));
+        this.patientObservable = new LoadingWrapper<Patient>(this.patientService.getPatientById(this.patientID));
       }
     );
   }

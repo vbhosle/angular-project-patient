@@ -38,7 +38,7 @@ export class PatientService {
   }
 
   getPatientById(patinetID: number): Observable<Patient> {
-    return this.httpClient.get<Patient>(this.patientServiceURL + patinetID)
+    return this.httpClient.get<Patient>(this.patientServiceURL + "/" + patinetID)
             .pipe(
               map(
                 patient => new Patient(patient.patientId, patient.patientName, new Date(patient.dateOfBirth))
