@@ -3,6 +3,8 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Patient } from '../../models/patient.model';
 import { PatientService } from '../../services/patient.service';
+import { LoadingWrapper } from '../../utils/loading-wrapper.util';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-patient-add',
@@ -11,7 +13,9 @@ import { PatientService } from '../../services/patient.service';
 })
 export class PatientAddComponent implements OnInit {
 
-  patientAddForm: FormGroup;
+  private patientAddForm: FormGroup;
+
+  private patientObservable: LoadingWrapper<Patient>;
   
   constructor(private patientService: PatientService, private flashMessageService: FlashMessagesService) { }
 
@@ -28,12 +32,7 @@ export class PatientAddComponent implements OnInit {
                         this.patientAddForm.get('name').value,
                         new Date(this.patientAddForm.get('dob').value),
                       );
-    this.patientService.addPatient(patient);
-    this.flashMessageService.show(
-      `<div class="alert alert-success">
-        Patient Added!
-       </div>`
-    );
+    this.patientObservable = new LoadingWrapper<Patient>(this.patientService.addPatient(patient));
   }
 
 

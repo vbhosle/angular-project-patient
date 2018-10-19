@@ -14,7 +14,7 @@ export class LoadingWrapper<T> {
       shareReplay<T>(1),
       catchError(error => {
         console.log(error);
-        if(error instanceof HttpErrorResponse){
+        if(error instanceof HttpErrorResponse && (<HttpErrorResponse>error).error.message){
             this._errorLoading$.next((<HttpErrorResponse>error).error.message);
         }
         else{
