@@ -70,7 +70,7 @@ export class PatientListComponent implements OnInit, CanDeactivateGuard {
     combineLatest(deleteObservables).subscribe(
       () => {console.log("done")},
       (error) => { console.log("error")},
-      () => this.refreshPatientList
+      () => this.refreshPatientList()
     );
   }
 
